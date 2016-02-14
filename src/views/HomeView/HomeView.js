@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { actions as counterActions } from '../../redux/modules/counter'
 import DuckImage from './Duck.jpg'
 import classes from './HomeView.scss'
+import { FlatButton, RaisedButton } from 'material-ui'
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -36,13 +37,14 @@ export class HomeView extends React.Component {
           {' '}
           <span className={classes['counter--green']}>{this.props.counter}</span>
         </h2>
-        <button className='btn btn-default' onClick={() => this.props.increment(1)}>
-          Increment
-        </button>
+        <FlatButton
+          label='Increment'
+          onTouchTap={() => this.props.increment(1)} />
         {' '}
-        <button className='btn btn-default' onClick={this.props.doubleAsync}>
-          Double (Async)
-        </button>
+        <RaisedButton
+          label='Double (Async)'
+          onClick={this.props.doubleAsync} />
+        <br />
         <hr />
         <Link to='/404'>Go to 404 Page</Link>
       </div>

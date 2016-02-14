@@ -1,11 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 import { useRouterHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import makeRoutes from './routes'
 import Root from './containers/Root'
 import configureStore from './redux/configureStore'
+
+// Needed for onTouchTap
+// Can go away when react 1.0 release
+// Check this repo:
+// https://github.com/callemall/material-ui
+injectTapEventPlugin()
 
 // Create redux store and sync with react-router-redux. We have installed the
 // react-router-redux reducer under the key "router" in src/routes/index.js,
