@@ -30,14 +30,18 @@ export const oauthError = (error: string): Action => ({
 
 export const receiveRequestToken = (requestToken: string, requestTokenSecret: string): Action => ({
   type: REQUEST_TOKEN_RECEIVE,
-  requestToken,
-  requestTokenSecret
+  payload: {
+    requestToken,
+    requestTokenSecret
+  }
 })
 
 export const receiveAccessToken = (accessToken: string, accessTokenSecret: string): Action => ({
   type: ACCESS_TOKEN_RECEIVE,
-  accessToken,
-  accessTokenSecret
+  payload: {
+    accessToken,
+    accessTokenSecret
+  }
 })
 
 export const requestRequestToken = (endpointKey: string): Function => {
@@ -97,8 +101,8 @@ export const requestAccessToken = (): Function => {
       const oauth = getState().router.locationBeforeTransitions.query
       console.log(oauth)
 
-      const baseUrl = 'https://***REMOVED***/getTwitterAccessToken'
-      const url = `${baseUrl}?requestToken=${requestToken.requestToken}&requestTokenSecret=${requestToken.requestTokenSecret}&oauth_verifier=${oauth.oauth_verifier}`
+      const api = 'https://***REMOVED***/getTwitterAccessToken'
+      const url = `${api}?requestToken=${requestToken.requestToken}&requestTokenSecret=${requestToken.requestTokenSecret}&oauth_verifier=${oauth.oauth_verifier}`
 
       // We don't need the request token anymore
       removeRequestToken()
@@ -140,12 +144,18 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+  [ACCESS_TOKEN_RECEIVE]: (state: Object, action: {payload: Object}): Object => {
+    return Object.assign({}, state, action.payload)
+  }
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {}
+const initialState = {
+  accessToken: null,
+  accessTokenSecret: null
+}
 export default function authReducer (state: Object = initialState, action: Action): Object {
   const handler = ACTION_HANDLERS[action.type]
 
