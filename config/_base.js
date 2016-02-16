@@ -38,6 +38,8 @@ const config = {
   },
   compiler_vendor : [
     'history',
+    'isomorphic-fetch',
+    'js-cookie',
     'material-ui',
     'react',
     'react-redux',
