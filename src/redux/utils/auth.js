@@ -2,11 +2,12 @@ import Cookies from 'js-cookie'
 
 const REQUEST_TOKEN_COOKIE = 'REQUEST_TOKEN_COOKIE'
 const ACCESS_TOKEN_COOKIE = 'ACCESS_TOKEN_COOKIE'
+const COOKIE_PATH = '/'
 
 export function storeRequestToken (val) {
-  Cookies.set(REQUEST_TOKEN_COOKIE, JSON.stringify(val), {
+  Cookies.set(REQUEST_TOKEN_COOKIE, val, {
     expires: 14,
-    path: '/'
+    path: COOKIE_PATH
   })
 }
 
@@ -16,14 +17,14 @@ export function getRequestToken () {
 
 export function removeRequestToken () {
   Cookies.remove(REQUEST_TOKEN_COOKIE, {
-    path: '/'
+    path: COOKIE_PATH
   })
 }
 
 export function storeAccessToken (val) {
-  Cookies.set(ACCESS_TOKEN_COOKIE, JSON.stringify(val), {
+  Cookies.set(ACCESS_TOKEN_COOKIE, val, {
     expires: 14,
-    path: '/'
+    path: COOKIE_PATH
   })
 }
 
@@ -33,7 +34,7 @@ export function getAccessToken () {
 
 export function removeAccessToken () {
   Cookies.remove(ACCESS_TOKEN_COOKIE, {
-    path: '/'
+    path: COOKIE_PATH
   })
 }
 
