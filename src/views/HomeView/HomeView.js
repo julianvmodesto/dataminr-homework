@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
-import { actions as counterActions } from '../../redux/modules/counter'
-import DuckImage from './Duck.jpg'
+import { actions as authActions } from '../../redux/modules/auth'
 import classes from './HomeView.scss'
-import { FlatButton, RaisedButton } from 'material-ui'
+import { RaisedButton } from 'material-ui'
+import { bindActionCreators } from 'redux'
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -14,42 +13,27 @@ import { FlatButton, RaisedButton } from 'material-ui'
 const mapStateToProps = (state) => ({
   counter: state.counter
 })
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  dispatch,
+  ...authActions
+}, dispatch)
 export class HomeView extends React.Component {
   static propTypes = {
-    counter: PropTypes.number.isRequired,
-    doubleAsync: PropTypes.func.isRequired,
-    increment: PropTypes.func.isRequired
-  };
+    requestRequestToken: PropTypes.func.isRequired
+  }
 
+  // TODO: separate views into smart and dumb components
   render () {
     return (
       <div className='container text-center'>
-        <div className='row'>
-          <div className='col-xs-2 col-xs-offset-5'>
-            <img className={classes.duck}
-              src={DuckImage}
-              alt='This is a duck, because Redux.' />
-          </div>
-        </div>
-        <h1>Welcome to the React Redux Starter Kit</h1>
-        <h2>
-          Sample Counter:
-          {' '}
-          <span className={classes['counter--green']}>{this.props.counter}</span>
-        </h2>
-        <FlatButton
-          label='Increment'
-          onTouchTap={() => this.props.increment(1)} />
-        {' '}
+        <h1>Welcome to Tweetstat</h1>
         <RaisedButton
-          label='Double (Async)'
-          onClick={this.props.doubleAsync} />
+          label='Authorize on Twitter'
+          onClick={this.props.requestRequestToken} />
         <br />
-        <hr />
-        <Link to='/404'>Go to 404 Page</Link>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, counterActions)(HomeView)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeView)
