@@ -55,3 +55,9 @@ export function requireAuth (nextState, replace) {
     }
   }
 }
+
+export function tryAuth (nextState, replace) {
+  if (getAccessToken()) {
+    replace('/twitter-auth-success')
+  }
+}

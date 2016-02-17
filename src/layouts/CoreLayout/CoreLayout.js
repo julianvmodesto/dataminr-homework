@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
-import '../../styles/core.scss'
+
+import AppBar from 'material-ui/lib/app-bar'
 
 // Note: Stateless/function components *will not* hot reload!
 // react-transform *only* works on component classes.
@@ -14,6 +15,12 @@ function CoreLayout ({ children }) {
   return (
     <div className='page-container'>
       <div className='view-container'>
+        <AppBar
+          title='Twitter Lexicon'
+          iconElementLeft={
+            <span></span>
+          }
+        />
         {children}
       </div>
     </div>

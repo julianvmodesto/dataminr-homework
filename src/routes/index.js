@@ -9,12 +9,12 @@ import { Route, IndexRoute, Redirect } from 'react-router'
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 import HomeView from 'views/HomeView/HomeView'
 import TwitterView from 'views/TwitterView/TwitterView'
-import { requireAuth } from 'redux/utils/auth'
+import { tryAuth, requireAuth } from 'redux/utils/auth'
 import NotFoundView from 'views/NotFoundView/NotFoundView'
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
-    <IndexRoute component={HomeView} />
+    <IndexRoute component={HomeView} onEnter={tryAuth} />
     <Route path='/twitter-auth-success' component={TwitterView} onEnter={requireAuth} />
     <Route path='/404' component={NotFoundView} />
     <Redirect from='*' to='/404' />

@@ -11,7 +11,6 @@ import { bindActionCreators } from 'redux'
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  counter: state.counter
 })
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   dispatch,
@@ -22,15 +21,14 @@ export class HomeView extends React.Component {
     requestRequestToken: PropTypes.func.isRequired
   }
 
-  // TODO: separate views into smart and dumb components
   render () {
     return (
       <div className='container text-center'>
-        <h1>Welcome to Tweetstat</h1>
+        <h1>What's your Twitter lexicon nowadays?</h1>
+        <br />
         <RaisedButton
           label='Authorize on Twitter'
           onClick={this.props.requestRequestToken} />
-        <br />
       </div>
     )
   }

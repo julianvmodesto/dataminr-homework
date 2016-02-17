@@ -37,6 +37,7 @@ const config = {
     colors : true
   },
   compiler_vendor : [
+    'common-words',
     'history',
     'isomorphic-fetch',
     'js-cookie',
@@ -46,7 +47,8 @@ const config = {
     'react-router',
     'react-router-redux',
     'react-tap-event-plugin',
-    'redux'
+    'redux',
+    'twitter-text'
   ],
 
   // ----------------------------------

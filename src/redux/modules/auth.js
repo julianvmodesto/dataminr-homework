@@ -74,11 +74,11 @@ export const requestRequestToken = (endpointKey: string): Function => {
         const url = `https://api.twitter.com/oauth/authorize?oauth_token=${json.requestToken}`
         window.location.replace(url)
 
-        return Promise.resolve(requestToken)
+        return requestToken
       })
       .catch((response) => {
         console.log('fail', response)
-        dispatch(oauthError(response.statusText))
+        dispatch(oauthError(response))
       })
   }
 }
@@ -125,11 +125,11 @@ export const requestAccessToken = (): Function => {
           storeAccessToken(accessToken)
 
           dispatch(oauthEnd())
-          return Promise.resolve(accessToken)
+          return accessToken
         })
         .catch((response) => {
           console.log('fail', response)
-          dispatch(oauthError(response.statusText))
+          dispatch(oauthError(response))
         })
     }
   }
@@ -144,9 +144,8 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [ACCESS_TOKEN_RECEIVE]: (state: Object, action: {payload: Object}): Object => {
-    return Object.assign({}, state, action.payload)
-  }
+  [ACCESS_TOKEN_RECEIVE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
+  [OAUTH_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error)
 }
 
 // ------------------------------------
@@ -154,7 +153,8 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   accessToken: null,
-  accessTokenSecret: null
+  accessTokenSecret: null,
+  error: null
 }
 export default function authReducer (state: Object = initialState, action: Action): Object {
   const handler = ACTION_HANDLERS[action.type]
