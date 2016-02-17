@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { actions as authActions } from '../../redux/modules/auth'
-import classes from './HomeView.scss'
 import { RaisedButton } from 'material-ui'
 import { bindActionCreators } from 'redux'
 
