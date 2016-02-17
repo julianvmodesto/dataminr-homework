@@ -46,12 +46,14 @@ export const receiveAccessToken = (accessToken: string, accessTokenSecret: strin
 
 export const requestRequestToken = (endpointKey: string): Function => {
   return (dispatch: Function, getState: Function): Promise => {
+    // Begin OAuth secret handshake
+    // https://youtu.be/obgA89jHi0U
     dispatch(oauthStart(endpointKey))
 
     // Remove existing any request or access tokens to do a fresh authorization
     clean()
 
-    // Fetch API 1
+    // API 1
     const callbackUrl = 'http://127.0.0.1:3000/twitter-auth-success'
     return fetch(`https://***REMOVED***/getTwitterRequestToken?callback=${callbackUrl}`)
       .then((response) => {
@@ -85,21 +87,19 @@ export const requestRequestToken = (endpointKey: string): Function => {
 
 export const requestAccessToken = (): Function => {
   return (dispatch: Function, getState: Function): Promise => {
+    // Check if we already have an access token in our cookies
     let accessToken = getAccessToken()
 
     if (accessToken) {
-      // If we do have the OAuth access token stored in our cookies
+      // If we do have the OAuth access token stored in our cookies, then:
       dispatch(receiveAccessToken(accessToken.accessToken, accessToken.accessTokenSecret))
-
       dispatch(oauthEnd())
       // By convention, return a resolved Promise
       return Promise.resolve()
     } else {
-      // If we don't have the OAuth access token stored in our cookies,
-      // then request one
+      // If we don't have the OAuth access token stored in our cookies, then request one
       const requestToken = getRequestToken()
       const oauth = getState().router.locationBeforeTransitions.query
-      console.log(oauth)
 
       const api = 'https://***REMOVED***/getTwitterAccessToken'
       const url = `${api}?requestToken=${requestToken.requestToken}&requestTokenSecret=${requestToken.requestTokenSecret}&oauth_verifier=${oauth.oauth_verifier}`
@@ -144,7 +144,6 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [ACCESS_TOKEN_RECEIVE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
   [OAUTH_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error)
 }
 
@@ -152,8 +151,6 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  accessToken: null,
-  accessTokenSecret: null,
   error: null
 }
 export default function authReducer (state: Object = initialState, action: Action): Object {

@@ -183,7 +183,7 @@ const initialState = {
   id: null,
   screenName: null,
   tweets: [],
-  tweetBlob: null,
+  topWords: [],
   error: null
 }
 export default function twitterReducer (state: Object = initialState, action: Action): Object {

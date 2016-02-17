@@ -9,8 +9,9 @@ import { Route, IndexRoute, Redirect } from 'react-router'
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 import HomeView from 'views/HomeView/HomeView'
 import TwitterView from 'views/TwitterView/TwitterView'
-import { tryAuth, requireAuth } from 'redux/utils/auth'
 import NotFoundView from 'views/NotFoundView/NotFoundView'
+
+import { tryAuth, requireAuth } from 'redux/utils/auth'
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
