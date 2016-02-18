@@ -1,4 +1,12 @@
 import React, { PropTypes } from 'react'
+import classes from './Terms.scss'
+import Card from 'material-ui/lib/card/card'
+import CardHeader from 'material-ui/lib/card/card-header'
+import List from 'material-ui/lib/lists/list'
+import ListItem from 'material-ui/lib/lists/list-item'
+import ActionInfo from 'material-ui/lib/svg-icons/action/info'
+import Avatar from 'material-ui/lib/avatar'
+import styles from 'material-ui/lib/styles';
 
 export class Terms extends React.Component {
 
@@ -9,24 +17,24 @@ export class Terms extends React.Component {
     terms: []
   }
 
-  // http://stackoverflow.com/a/12646864/1881379
-  shuffleArray (array) {
-    let ret = array.slice()
-    for (let i = ret.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1))
-      let temp = ret[i]
-      ret[i] = ret[j]
-      ret[j] = temp
-    }
-    return ret
-  }
-
   render () {
-    return (<div className=''>
-      <div className='text-center'>
-        {this.shuffleArray(this.props.terms).map((term) => <p key={term.word}>{term.word}</p>)}
-      </div>
-    </div>)
+    return (<Card className={classes.terms}>
+      <CardHeader
+        title={'Your Top ' + this.props.terms.length + ' Terms'}
+        subtitle='from most to least frequent'
+        className='text-center'
+      />
+      <List>
+      {this.props.terms.map((term, index) => {
+        return (<ListItem
+          key={term.word}
+          primaryText={term.word}
+          leftAvatar={<Avatar backgroundColor={styles.Colors.cyan500}>{index + 1}</Avatar>}
+          rightIcon={<ActionInfo />}
+          />)
+      })}
+      </List>
+    </Card>)
   }
 }
 

@@ -34,19 +34,20 @@ export class TwitterView extends React.Component {
 
   render () {
     return (
-      <div className='container text-center'>
-        <h1>@{this.props.screenName}</h1>
-        <br />
-        <h3>Your Twitter Lexicon</h3>
+      <div className='container'>
+        <h1 className='text-center'>Your Twitter Lexicon</h1>
         <br />
         <div className='row'>
-          <div className='col-md-6 text-center'>
+          <div className='col-md-6'>
             <Terms terms={this.props.topTerms}/>
           </div>
-          <div className='col-md-6 text-center'>
-            <Timeline tweets={this.props.tweets} />
+          <div className='col-md-6'>
+            <Timeline tweets={this.props.tweets} screenName={this.props.screenName} />
           </div>
         </div>
+        <br />
+        <hr />
+        <br />
       </div>
     )
   }
