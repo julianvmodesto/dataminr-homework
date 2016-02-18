@@ -32,14 +32,13 @@ export const newsError = (error: string): Action => ({
 })
 
 // ~temporary APi key for this application~ shhh
-const NYT_API_KEY = '***REMOVED***'
+const NYT_API_KEY = encodeURIComponent('***REMOVED***')
 
 const getNewsForTerm = (term: string): Promise => {
-
   // Luckily, the NYT API rate limit is exactly 10 hits per second,
   // and we'll query the APi for at *most* 10 terms :)
   const baseUrl = 'https://api.nytimes.com/svc/search/v2/articlesearch.json'
-  const url = `${baseUrl}?[q=${term}]&api-key=${NYT_API_KEY}`
+  const url = `${baseUrl}?q=${term}&begin_date=20160101&api-key=${NYT_API_KEY}`
 
   return fetch(url)
     .then((response) => {
@@ -58,7 +57,7 @@ export const getNews = (topTerms: Array): Function => {
     dispatch(newsStart())
 
     // Get news for all terms
-    return Promise.all(topTerms.map((term) => getNewsForTerm(term)))
+    return Promise.all(topTerms.map((term) => getNewsForTerm(term.word)))
       .then((news) => {
         dispatch(newsComplete(news))
         return news

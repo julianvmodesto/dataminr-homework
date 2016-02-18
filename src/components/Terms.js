@@ -9,6 +9,7 @@ import Avatar from 'material-ui/lib/avatar'
 import styles from 'material-ui/lib/styles'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
+import CircularProgress from 'material-ui/lib/circular-progress'
 
 export class Terms extends React.Component {
 
@@ -25,12 +26,14 @@ export class Terms extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      open: false
+      open: false,
+      term: 'N/A',
+      termIndex: -1
     }
   }
 
-  openDialog = (term) => {
-    this.setState({open: true, term})
+  openDialog = (term, termIndex) => {
+    this.setState({open: true, term, termIndex})
   }
 
   closeDialog = () => {
@@ -47,7 +50,18 @@ export class Terms extends React.Component {
       />
     ]
 
-    return (<Card className={classes.terms}>
+    // Get news for term and display in the dialog
+    let dialogNews
+    if (this.state.termIndex !== -1 &&
+      this.props.terms.length > 0 && this.props.news.length === this.props.terms.length) {
+      dialogNews = this.props.news[this.state.termIndex].map((doc) => {
+        return (<p key={doc._id}>{doc.headline.main}</p>)
+      })
+    } else {
+      dialogNews = <div className={classes.progress}><CircularProgress /></div>
+    }
+
+    return (<Card>
       <CardHeader
         title={'Your Top ' + this.props.terms.length + ' Terms'}
         subtitle='from most to least frequent'
@@ -60,7 +74,7 @@ export class Terms extends React.Component {
           primaryText={term.word}
           leftAvatar={<Avatar backgroundColor={styles.Colors.cyan500}>{index + 1}</Avatar>}
           rightIcon={<ActionInfo />}
-          onTouchTap={() => this.openDialog(term.word)}
+          onTouchTap={() => this.openDialog(term.word, index)}
           />)
       })}
         <Dialog
@@ -70,7 +84,7 @@ export class Terms extends React.Component {
           open={this.state.open}
           onRequestClose={this.closeDialog}
         >
-          lorem ipsum
+        {dialogNews}
         </Dialog>
       </List>
     </Card>)
