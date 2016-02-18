@@ -7,12 +7,11 @@ import CardHeader from 'material-ui/lib/card/card-header'
 export class Timeline extends React.Component {
   static propTypes = {
     tweets: PropTypes.arrayOf(PropTypes.string).isRequired,
-    screenName: PropTypes.string.isRequired
+    screenName: PropTypes.string
   }
 
   static defaultProps = {
-    tweets: [],
-    screenName: ''
+    tweets: []
   }
 
   render () {

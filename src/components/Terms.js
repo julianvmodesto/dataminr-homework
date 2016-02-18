@@ -6,7 +6,7 @@ import List from 'material-ui/lib/lists/list'
 import ListItem from 'material-ui/lib/lists/list-item'
 import ActionInfo from 'material-ui/lib/svg-icons/action/info'
 import Avatar from 'material-ui/lib/avatar'
-import styles from 'material-ui/lib/styles';
+import styles from 'material-ui/lib/styles'
 
 export class Terms extends React.Component {
 
