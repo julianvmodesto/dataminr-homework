@@ -14,9 +14,7 @@ export class Timeline extends React.Component {
   render () {
     return (<div className={classes.timeline}>
       <div className='text-center'>
-      {this.props.tweets.map((tweet) => {
-        return (<TweetEmbed key={tweet} id={tweet} />)
-      })
+      {this.props.tweets.map((tweet) => <TweetEmbed key={tweet} id={tweet} />)
       }
       </div>
     </div>)
