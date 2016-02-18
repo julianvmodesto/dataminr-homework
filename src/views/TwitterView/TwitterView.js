@@ -14,7 +14,9 @@ const mapStateToProps = (state) => ({
   tweets: state.twitter.tweets,
   tweetsLoading: state.twitter.tweetsLoading,
   topTerms: state.twitter.topTerms,
-  topTermsLoading: state.twitter.topTermsLoading
+  topTermsLoading: state.twitter.topTermsLoading,
+  news: state.news.news,
+  newsLoading: state.news.loading
 })
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   dispatch,
@@ -33,7 +35,9 @@ export class TwitterView extends React.Component {
     getTopTerms: PropTypes.func.isRequired,
     topTerms: PropTypes.arrayOf(PropTypes.object).isRequired,
     topTermsLoading: PropTypes.bool.isRequired,
-    getNews: PropTypes.func.isRequired
+    getNews: PropTypes.func.isRequired,
+    news: PropTypes.arrayOf(PropTypes.array).isRequired,
+    newsLoading: PropTypes.bool.isRequired
   }
 
   componentWillMount () {
@@ -51,7 +55,7 @@ export class TwitterView extends React.Component {
     } else {
       content = (<div className='row'>
         <div className='col-md-6'>
-          <Terms terms={this.props.topTerms}/>
+          <Terms terms={this.props.topTerms} news={this.props.news}/>
         </div>
         <div className='col-md-6'>
           <Timeline tweets={this.props.tweets} screenName={this.props.screenName} />

@@ -31,13 +31,42 @@ export const newsError = (error: string): Action => ({
   error
 })
 
+// ~temporary APi key for this application~ shhh
+const NYT_API_KEY = '***REMOVED***'
+
+const getNewsForTerm = (term: string): Promise => {
+
+  // Luckily, the NYT API rate limit is exactly 10 hits per second,
+  // and we'll query the APi for at *most* 10 terms :)
+  const baseUrl = 'https://api.nytimes.com/svc/search/v2/articlesearch.json'
+  const url = `${baseUrl}?[q=${term}]&api-key=${NYT_API_KEY}`
+
+  return fetch(url)
+    .then((response) => {
+      if (!response || !response.ok) {
+        throw new Error(response.statusText)
+      }
+      return response.json()
+    })
+    .then((json) => {
+      return json.response.docs
+    })
+}
+
 export const getNews = (topTerms: Array): Function => {
   return (dispatch: Function, getState: Function): Promise => {
     dispatch(newsStart())
 
-    dispatch(newsComplete(['test']))
-
-    return Promise.resolve()
+    // Get news for all terms
+    return Promise.all(topTerms.map((term) => getNewsForTerm(term)))
+      .then((news) => {
+        dispatch(newsComplete(news))
+        return news
+      })
+      .catch((response) => {
+        console.log('fail', response)
+        dispatch(newsError(response))
+      })
   }
 }
 
