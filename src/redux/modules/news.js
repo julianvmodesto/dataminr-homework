@@ -53,7 +53,7 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [NEWS_COMPLETE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
-  [NEWS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error)
+  [NEWS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, {error: action.error})
 }
 
 // ------------------------------------

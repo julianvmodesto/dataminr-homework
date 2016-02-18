@@ -144,7 +144,7 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [OAUTH_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error)
+  [OAUTH_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, {error: action.error})
 }
 
 // ------------------------------------

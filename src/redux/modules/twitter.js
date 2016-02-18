@@ -194,13 +194,13 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [CREDENTIALS_COMPLETE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
-  [CREDENTIALS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error),
+  [CREDENTIALS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, {error: action.error}),
   [TWEETS_START]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
   [TWEETS_COMPLETE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
-  [TWEETS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error),
+  [TWEETS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, {error: action.error}),
   [TOP_TERMS_START]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
   [TOP_TERMS_COMPLETE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
-  [TOP_TERMS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error)
+  [TOP_TERMS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, {error: action.error})
 }
 
 // ------------------------------------
