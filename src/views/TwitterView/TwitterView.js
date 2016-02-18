@@ -4,10 +4,12 @@ import { actions as authActions } from '../../redux/modules/auth'
 import { actions as twitterActions } from '../../redux/modules/twitter'
 import { bindActionCreators } from 'redux'
 import Timeline from '../../components/Timeline'
+import Terms from '../../components/Terms'
 
 const mapStateToProps = (state) => ({
   screenName: state.twitter.screenName,
-  tweets: state.twitter.tweets
+  tweets: state.twitter.tweets,
+  topTerms: state.twitter.topTerms
 })
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   dispatch,
@@ -20,7 +22,8 @@ export class TwitterView extends React.Component {
     getCredentials: PropTypes.func.isRequired,
     getTweets: PropTypes.func.isRequired,
     tweets: PropTypes.arrayOf(PropTypes.string).isRequired,
-    screenName: PropTypes.string
+    screenName: PropTypes.string,
+    topTerms: PropTypes.arrayOf(PropTypes.array).isRequired
   }
 
   componentWillMount () {
@@ -37,6 +40,9 @@ export class TwitterView extends React.Component {
         <h3>Your Twitter Lexicon</h3>
         <br />
         <div className='row'>
+          <div className='col-md-6 text-center'>
+            <Terms terms={this.props.topTerms}/>
+          </div>
           <div className='col-md-6 text-center'>
             <Timeline tweets={this.props.tweets} />
           </div>

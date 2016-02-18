@@ -65,11 +65,11 @@ export const tweetsStart = (): Action => ({
   type: TWEETS_START
 })
 
-export const tweetsComplete = (tweets: Array, topWords: Array): Action => ({
+export const tweetsComplete = (tweets: Array, topTerms: Array): Action => ({
   type: TWEETS_COMPLETE,
   payload: {
     tweets: tweets.map((item) => item.id_str),
-    topWords: topWords
+    topTerms: topTerms
   }
 })
 
@@ -183,7 +183,7 @@ const initialState = {
   id: null,
   screenName: null,
   tweets: [],
-  topWords: [],
+  topTerms: [],
   error: null
 }
 export default function twitterReducer (state: Object = initialState, action: Action): Object {
