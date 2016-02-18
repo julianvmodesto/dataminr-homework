@@ -1,4 +1,16 @@
 .timeline {
-    overflow-y: scroll;
-    max-height: 70vh;
+  overflow-y: scroll;
+  max-height: 70vh;
+
+  // flexbox container
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+  // center everything
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
 }
