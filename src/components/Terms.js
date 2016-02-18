@@ -7,17 +7,46 @@ import ListItem from 'material-ui/lib/lists/list-item'
 import ActionInfo from 'material-ui/lib/svg-icons/action/info'
 import Avatar from 'material-ui/lib/avatar'
 import styles from 'material-ui/lib/styles'
+import Dialog from 'material-ui/lib/dialog'
+import FlatButton from 'material-ui/lib/flat-button'
 
 export class Terms extends React.Component {
 
   static propTypes = {
-    terms: PropTypes.arrayOf(PropTypes.object).isRequired
+    terms: PropTypes.arrayOf(PropTypes.object).isRequired,
+    news: PropTypes.arrayOf(PropTypes.array).isRequired
   }
+
   static defaultProps = {
-    terms: []
+    terms: [],
+    news: []
+  }
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      open: false
+    }
+  }
+
+  openDialog = (term) => {
+    this.setState({open: true, term})
+  }
+
+  closeDialog = () => {
+    this.setState({open: false})
   }
 
   render () {
+    const actions = [
+      <FlatButton
+        label='Close'
+        primary
+        keyboardFocused
+        onTouchTap={this.closeDialog}
+      />
+    ]
+
     return (<Card className={classes.terms}>
       <CardHeader
         title={'Your Top ' + this.props.terms.length + ' Terms'}
@@ -31,8 +60,18 @@ export class Terms extends React.Component {
           primaryText={term.word}
           leftAvatar={<Avatar backgroundColor={styles.Colors.cyan500}>{index + 1}</Avatar>}
           rightIcon={<ActionInfo />}
+          onTouchTap={() => this.openDialog(term.word)}
           />)
       })}
+        <Dialog
+          title={this.state.term}
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.closeDialog}
+        >
+          lorem ipsum
+        </Dialog>
       </List>
     </Card>)
   }
