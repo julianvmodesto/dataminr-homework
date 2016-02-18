@@ -11,11 +11,11 @@ import HomeView from 'views/HomeView/HomeView'
 import TwitterView from 'views/TwitterView/TwitterView'
 import NotFoundView from 'views/NotFoundView/NotFoundView'
 
-import { tryAuth, requireAuth } from 'redux/utils/auth'
+import { requireAuth } from 'redux/utils/auth'
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
-    <IndexRoute component={HomeView} onEnter={tryAuth} />
+    <IndexRoute component={HomeView} />
     <Route path='/twitter-auth-success' component={TwitterView} onEnter={requireAuth} />
     <Route path='/404' component={NotFoundView} />
     <Redirect from='*' to='/404' />
