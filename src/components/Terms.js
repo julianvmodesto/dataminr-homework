@@ -11,23 +11,20 @@ export class Terms extends React.Component {
 
   // http://stackoverflow.com/a/12646864/1881379
   shuffleArray (array) {
-    for (let i = array.length - 1; i > 0; i--) {
+    let ret = array.slice()
+    for (let i = ret.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1))
-      let temp = array[i]
-      array[i] = array[j]
-      array[j] = temp
+      let temp = ret[i]
+      ret[i] = ret[j]
+      ret[j] = temp
     }
-    return array
-  }
-
-  componentWillMount () {
-    this.shuffleArray(this.props.terms)
+    return ret
   }
 
   render () {
     return (<div className=''>
       <div className='text-center'>
-        {this.props.terms.map((term) => <p key={term.word}>{term.word}</p>)}
+        {this.shuffleArray(this.props.terms).map((term) => <p key={term.word}>{term.word}</p>)}
       </div>
     </div>)
   }
