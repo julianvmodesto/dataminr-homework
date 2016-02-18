@@ -1,7 +1,7 @@
 import common from 'common-words'
 import twitter from 'twitter-text'
 
-export const topTerms = (tweets: Array): Array => {
+export const getTopTerms = (tweets: Array): Array => {
   // Ignore common words
   const ignoreWords = common.map((item) => item.word)
   ignoreWords.push('is', 're', 'are', 'where', 'https', 'don', 'sure')
