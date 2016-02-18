@@ -28,9 +28,6 @@ export const newsComplete = (news: Array): Action => ({
 
 export const newsError = (error: string): Action => ({
   type: NEWS_ERROR,
-  payload: {
-    loading: true
-  },
   error
 })
 
@@ -61,7 +58,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   news: [],
-  loading: false,
+  loading: true,
   error: null
 }
 export default function newsReducer (state: Object = initialState, action: Action): Object {
