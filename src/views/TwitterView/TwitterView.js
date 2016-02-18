@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { actions as authActions } from '../../redux/modules/auth'
 import { actions as twitterActions } from '../../redux/modules/twitter'
+import { actions as newsActions } from '../../redux/modules/news'
 import { bindActionCreators } from 'redux'
 import Timeline from '../../components/Timeline'
 import Terms from '../../components/Terms'
@@ -14,7 +15,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   dispatch,
   ...authActions,
-  ...twitterActions
+  ...twitterActions,
+  ...newsActions
 }, dispatch)
 export class TwitterView extends React.Component {
   static propTypes = {
@@ -23,13 +25,15 @@ export class TwitterView extends React.Component {
     getTweets: PropTypes.func.isRequired,
     tweets: PropTypes.arrayOf(PropTypes.string).isRequired,
     screenName: PropTypes.string,
-    topTerms: PropTypes.arrayOf(PropTypes.object).isRequired
+    topTerms: PropTypes.arrayOf(PropTypes.object).isRequired,
+    getNews: PropTypes.func.isRequired
   }
 
   componentWillMount () {
     this.props.requestAccessToken()
       .then(() => this.props.getCredentials())
       .then(() => this.props.getTweets())
+      .then(() => this.props.getNews())
   }
 
   render () {
