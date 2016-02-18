@@ -1,6 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import { getAccessToken } from '../utils/auth'
-import { getTopTerms } from '../utils/terms'
+
+import common from 'common-words'
+import twitter from 'twitter-text'
 
 /* @flow */
 // ------------------------------------
@@ -12,6 +14,9 @@ export const CREDENTIALS_ERROR = 'CREDENTIALS_ERROR'
 export const TWEETS_START = 'TWEETS_START'
 export const TWEETS_COMPLETE = 'TWEETS_COMPLETE'
 export const TWEETS_ERROR = 'TWEETS_ERROR'
+export const TOP_TERMS_START = 'TOP_TERMS_START'
+export const TOP_TERMS_COMPLETE = 'TOP_TERMS_COMPLETE'
+export const TOP_TERMS_ERROR = 'TOP_TERMS_ERROR'
 
 // ------------------------------------
 // Actions
@@ -63,14 +68,17 @@ export const getCredentials = (): Function => {
 }
 
 export const tweetsStart = (): Action => ({
-  type: TWEETS_START
+  type: TWEETS_START,
+  payload: {
+    tweetsLoading: true
+  }
 })
 
-export const tweetsComplete = (tweets: Array, topTerms: Array): Action => ({
+export const tweetsComplete = (tweets: Array): Action => ({
   type: TWEETS_COMPLETE,
   payload: {
-    tweets: tweets.map((item) => item.id_str),
-    topTerms: topTerms
+    tweetsLoading: false,
+    tweets
   }
 })
 
@@ -99,7 +107,7 @@ export const getTweets = (): Function => {
       .then((json) => {
         console.log('@-->response json', json)
 
-        dispatch(tweetsComplete(json, getTopTerms(json)))
+        dispatch(tweetsComplete(json.map((tweet) => tweet.id_str)))
 
         return json
       })
@@ -110,9 +118,75 @@ export const getTweets = (): Function => {
   }
 }
 
+export const topTermsStart = (): Action => ({
+  type: TOP_TERMS_START,
+  payload: {
+    topTermsLoading: true
+  }
+})
+
+export const topTermsComplete = (topTerms: Array): Action => ({
+  type: TOP_TERMS_COMPLETE,
+  payload: {
+    topTermsLoading: false,
+    topTerms
+  }
+})
+
+export const topTermsError = (error: string): Action => ({
+  type: TOP_TERMS_ERROR,
+  error
+})
+
+export const getTopTerms = (tweets: Array): Function => {
+  return (dispatch: Function, getState: Function): Promise => {
+    dispatch(topTermsStart())
+    // Ignore common words
+    const ignoreWords = common.map((item) => item.word)
+    ignoreWords.push('is', 're', 'are', 'where', 'https', 'don', 'sure')
+
+    // Map of word counts
+    const counts = new Map()
+
+    tweets
+      .map((tweet) => tweet.text)
+      // Remove Twitter Entities from Tweet i.e. hashtags, mentions, URLs
+      .map((text) => {
+        const entities = twitter.extractEntitiesWithIndices(text)
+
+        // Iterate the list of entities in reverse
+        // in order to correctly splice out the indices
+        for (let i = entities.length - 1; i >= 0; i--) {
+          let [start, end] = entities[i].indices
+          // Splice out text
+          text = text.slice(0, start) + '' + text.slice(end)
+        }
+        return text
+      })
+      // Concat text
+      .reduce((a, b) => a + ' ' + b)
+      // Match whole words
+      .match(/[a-z]+|\d+/igm)
+      .filter((word) => word.length > 1 && word !== 'RT' && !ignoreWords.includes(word.toLowerCase()))
+      // Do word count
+      .forEach((word) => {
+        let count = counts.get(word) || 0
+        counts.set(word, count + 1)
+      })
+    // Sort words by counts, descending
+    let ret = Array.from(counts.entries()).map(([word, count]) => ({word, count}))
+    ret.sort((a, b) => b.count - a.count)
+    // Return only top 10 terms
+    ret = ret.length > 10 ? ret.slice(0, 10) : ret
+    dispatch(topTermsComplete(ret))
+    return Promise.resolve(ret)
+  }
+}
+
 export const actions = {
   getCredentials,
-  getTweets
+  getTweets,
+  getTopTerms
 }
 
 // ------------------------------------
@@ -121,8 +195,12 @@ export const actions = {
 const ACTION_HANDLERS = {
   [CREDENTIALS_COMPLETE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
   [CREDENTIALS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error),
+  [TWEETS_START]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
   [TWEETS_COMPLETE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
-  [TWEETS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error)
+  [TWEETS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error),
+  [TOP_TERMS_START]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
+  [TOP_TERMS_COMPLETE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
+  [TOP_TERMS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error)
 }
 
 // ------------------------------------
@@ -132,7 +210,9 @@ const initialState = {
   id: null,
   screenName: null,
   tweets: [],
+  tweetsLoading: true,
   topTerms: [],
+  topTermsLoading: true,
   error: null
 }
 export default function twitterReducer (state: Object = initialState, action: Action): Object {

@@ -6,11 +6,15 @@ import { actions as newsActions } from '../../redux/modules/news'
 import { bindActionCreators } from 'redux'
 import Timeline from '../../components/Timeline'
 import Terms from '../../components/Terms'
+import CircularProgress from 'material-ui/lib/circular-progress'
+import classes from './TwitterView.scss'
 
 const mapStateToProps = (state) => ({
   screenName: state.twitter.screenName,
   tweets: state.twitter.tweets,
-  topTerms: state.twitter.topTerms
+  tweetsLoading: state.twitter.tweetsLoading,
+  topTerms: state.twitter.topTerms,
+  topTermsLoading: state.twitter.topTermsLoading
 })
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   dispatch,
@@ -22,10 +26,13 @@ export class TwitterView extends React.Component {
   static propTypes = {
     requestAccessToken: PropTypes.func.isRequired,
     getCredentials: PropTypes.func.isRequired,
+    screenName: PropTypes.string,
     getTweets: PropTypes.func.isRequired,
     tweets: PropTypes.arrayOf(PropTypes.string).isRequired,
-    screenName: PropTypes.string,
+    tweetsLoading: PropTypes.bool.isRequired,
+    getTopTerms: PropTypes.func.isRequired,
     topTerms: PropTypes.arrayOf(PropTypes.object).isRequired,
+    topTermsLoading: PropTypes.bool.isRequired,
     getNews: PropTypes.func.isRequired
   }
 
@@ -33,22 +40,30 @@ export class TwitterView extends React.Component {
     this.props.requestAccessToken()
       .then(() => this.props.getCredentials())
       .then(() => this.props.getTweets())
-      .then(() => this.props.getNews())
+      .then((tweets) => this.props.getTopTerms(tweets))
+      .then((topTerms) => this.props.getNews(topTerms))
   }
 
   render () {
+    let content
+    if (this.props.tweetsLoading || this.props.topTermsLoading) {
+      content = (<div className={classes.progress}><CircularProgress /></div>)
+    } else {
+      content = (<div className='row'>
+        <div className='col-md-6'>
+          <Terms terms={this.props.topTerms}/>
+        </div>
+        <div className='col-md-6'>
+          <Timeline tweets={this.props.tweets} screenName={this.props.screenName} />
+        </div>
+      </div>)
+    }
+
     return (
       <div className='container'>
         <h1 className='text-center'>Your Twitter Lexicon</h1>
         <br />
-        <div className='row'>
-          <div className='col-md-6'>
-            <Terms terms={this.props.topTerms}/>
-          </div>
-          <div className='col-md-6'>
-            <Timeline tweets={this.props.tweets} screenName={this.props.screenName} />
-          </div>
-        </div>
+        {content}
         <br />
         <hr />
         <br />

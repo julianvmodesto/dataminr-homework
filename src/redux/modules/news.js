@@ -12,22 +12,29 @@ export const NEWS_ERROR = 'NEWS_ERROR'
 // Actions
 // ------------------------------------
 export const newsStart = (): Action => ({
-  type: NEWS_START
+  type: NEWS_START,
+  payload: {
+    loading: true
+  }
 })
 
 export const newsComplete = (news: Array): Action => ({
   type: NEWS_COMPLETE,
   payload: {
+    loading: false,
     news
   }
 })
 
 export const newsError = (error: string): Action => ({
   type: NEWS_ERROR,
+  payload: {
+    loading: true
+  },
   error
 })
 
-export const getNews = (): Function => {
+export const getNews = (topTerms: Array): Function => {
   return (dispatch: Function, getState: Function): Promise => {
     dispatch(newsStart())
 
@@ -46,7 +53,7 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [NEWS_COMPLETE]: (state: Object, action: {payload: Object}): Object => Object.assign({}, state, action.payload),
-  [NEWS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error),
+  [NEWS_ERROR]: (state: Object, action: {error: string}): Object => Object.assign({}, state, action.error)
 }
 
 // ------------------------------------
@@ -54,6 +61,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   news: [],
+  loading: false,
   error: null
 }
 export default function newsReducer (state: Object = initialState, action: Action): Object {
