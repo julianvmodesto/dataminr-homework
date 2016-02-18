@@ -23,7 +23,7 @@ export class TwitterView extends React.Component {
     getTweets: PropTypes.func.isRequired,
     tweets: PropTypes.arrayOf(PropTypes.string).isRequired,
     screenName: PropTypes.string,
-    topTerms: PropTypes.arrayOf(PropTypes.array).isRequired
+    topTerms: PropTypes.arrayOf(PropTypes.object).isRequired
   }
 
   componentWillMount () {

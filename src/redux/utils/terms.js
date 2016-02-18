@@ -34,9 +34,9 @@ export const getTopTerms = (tweets: Array): Array => {
       let count = counts.get(word) || 0
       counts.set(word, count + 1)
     })
-  // Sort words by counts
-  let ret = Array.from(counts.entries())
-  ret.sort((a, b) => b[1] - a[1])
+  // Sort words by counts, descending
+  let ret = Array.from(counts.entries()).map(([word, count]) => ({word, count}))
+  ret.sort((a, b) => b.count - a.count)
   // Return only top 10 terms
   ret = ret.slice(0, 10)
   return ret

@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react'
 export class Terms extends React.Component {
 
   static propTypes = {
-    terms: PropTypes.arrayOf(PropTypes.array).isRequired
+    terms: PropTypes.arrayOf(PropTypes.object).isRequired
   }
   static defaultProps = {
     terms: []
@@ -22,13 +22,12 @@ export class Terms extends React.Component {
 
   componentWillMount () {
     this.shuffleArray(this.props.terms)
-    console.log(this.props.terms)
   }
 
   render () {
     return (<div className=''>
       <div className='text-center'>
-        {this.props.terms.map((term) => <p key={term[0]}>{term[0]}</p>)}
+        {this.props.terms.map((term) => <p key={term.word}>{term.word}</p>)}
       </div>
     </div>)
   }
