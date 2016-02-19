@@ -1,6 +1,6 @@
 Twitter Lexicon
 =======================
-This project was bootstrapped with the React Redux Starter Kit located at https://github.com/davezuko/react-redux-starter-kit.
+This project was bootstrapped with [the React Redux Starter Kit](https://github.com/davezuko/react-redux-starter-kit).
 
 Requirements
 ------------
