@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-starter-kit",
+  "name": "tweetstat",
   "version": "1.0.0",
-  "description": "Get started with React, Redux, and React-Router!",
+  "description": "Homework",
   "main": "index.js",
   "engines": {
     "node": ">=4.2.0",
