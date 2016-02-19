@@ -143,7 +143,7 @@ export const getTopTerms = (tweets: Array): Function => {
     dispatch(topTermsStart())
     // Ignore common words
     const ignoreWords = common.map((item) => item.word)
-    ignoreWords.push('is', 're', 'are', 'where', 'https', 'don', 'sure')
+    ignoreWords.push('is', 're', 'are', 'where', 'http', 'https', 'don', 'sure')
 
     // Map of word counts
     const counts = new Map()
