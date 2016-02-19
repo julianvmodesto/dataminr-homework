@@ -19,7 +19,7 @@ $ cd tweetstat
 $ npm install                   # Install Node modules listed in ./package.json (may take a while the first time)
 $ npm start                     # Compile and launch
 ```
-Run `npm run dev:no-debug` to run the app locally without the redux devtools in the sidebar.
+To disable the sidebar redux devtools, use ctrl+h or run `npm run dev:no-debug` instead.
 
 Usage
 -----
