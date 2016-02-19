@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react'
 import classes from './Terms.scss'
 import Card from 'material-ui/lib/card/card'
 import CardHeader from 'material-ui/lib/card/card-header'
+import CardText from 'material-ui/lib/card/card-text'
+import CardActions from 'material-ui/lib/card/card-actions'
 import List from 'material-ui/lib/lists/list'
 import ListItem from 'material-ui/lib/lists/list-item'
 import ActionInfo from 'material-ui/lib/svg-icons/action/info'
@@ -52,12 +54,43 @@ export class Terms extends React.Component {
 
     // Get news for term and display in the dialog
     let dialogNews
+    // Check that the news has been loaded
     if (this.state.termIndex !== -1 &&
       this.props.terms.length > 0 && this.props.news.length === this.props.terms.length) {
-      dialogNews = this.props.news[this.state.termIndex].map((doc) => {
-        return (<p key={doc._id}>{doc.headline.main}</p>)
-      })
+      dialogNews = (<div>
+        <p className='help-block'>Are you tweeting about cool ish?</p>
+        <p>
+          <strong>We tried searching for matching news articles from The New York Times.</strong>
+        </p>
+        {this.props.news[this.state.termIndex].map((doc) => {
+          try {
+            return (<Card key={doc._id}>
+              <CardHeader
+                title={doc.headline.main}
+                subtitle={doc.byline.original}
+                actAsExpander
+                showExpandableButton
+              />
+              <CardText expandable>
+                <p>{doc.snippet}</p>
+              </CardText>
+              <CardActions expandable>
+                <FlatButton
+                  label='Open Article'
+                  linkButton
+                  href={doc.web_url}
+                  target='_blank'
+                  />
+              </CardActions>
+            </Card>)
+          } catch (e) {
+            // In case any doc properties don't exist, don't render this Card
+            return <span></span>
+          }
+        })}
+      </div>)
     } else {
+      // Show a loading indicator if the news hasn't been loaded
       dialogNews = <div className={classes.progress}><CircularProgress /></div>
     }
 
@@ -83,6 +116,7 @@ export class Terms extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.closeDialog}
+          autoScrollBodyContent
         >
         {dialogNews}
         </Dialog>
