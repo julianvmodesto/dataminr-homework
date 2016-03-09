@@ -29,3 +29,7 @@ The npm scripts were provided by the React Redux Starter Kit.
 * `npm start` - Spins up Koa server to serve your app at `localhost:3000`. HMR will be enabled in development.
 * `npm run dev` - Same as `npm start`, but enables nodemon to automatically restart the server when server-related code is changed.
 * `npm run dev:no-debug` - Same as `npm run dev` but disables redux devtools.
+
+API Secrets
+-----
+NOTE: private Dataminr endpoints and my NYT API key were removed with BFG-repo-cleaner so this will not work out of the box
